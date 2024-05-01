@@ -1,6 +1,7 @@
 import 'package:quizapp/answer_button.dart';
 import 'package:flutter/material.dart';
 import 'package:quizapp/data/questions.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 
@@ -45,7 +46,13 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-          Text(currentQuestion.text), 
+          Text(currentQuestion.text,
+          style: GoogleFonts.nanumGothic(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold
+          ),
+          ), 
           const SizedBox(height: 30),
           // create button elevation 
           ...currentQuestion.getShuffledAnswers().map((answers) {
