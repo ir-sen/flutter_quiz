@@ -1,6 +1,8 @@
 import 'package:quizapp/questions_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:quizapp/start_screen.dart';
+import 'package:quizapp/data/questions.dart';
+import 'package:quizapp/result_screen_widget.dart';
 
 // just create class extends stateful widget which meand we can change inside class
 class Quiz extends StatefulWidget {
@@ -16,14 +18,37 @@ class Quiz extends StatefulWidget {
 
 // this is class use only inner this class
 class _QuizState extends State<Quiz> {
+  // list save state if user selected answer first add [0] secon [1] ...
+  List<String> selectedAnswers = [];
   // variable which can changed
   var activeScreen = 'start-screen';
-  
+
+
+  /// This method is called when user selects an answer
+  ///
+  /// Adds answer to the list of selected answers
+  /// and switches to result screen if all questions were answered
+  void chooseAnswer(String answer) {
+    selectedAnswers.add(answer);
+
+    /// If all questions were answered switch to result screen
+    if (selectedAnswers.length == questions.length) {
+      setState(() {
+        /// Reset selected answers list
+        // selectedAnswers = [];
+
+        /// Switch to result screen
+        activeScreen = 'result-screen';
+      });
+    }
+  }
   // @override
   // void initState() {
   //   activeScreen = StartScreen(switchScreen);
   //   super.initState();
   // }
+
+
 
   // this method functon for switch displays 
   void switchScreen() {
@@ -32,16 +57,19 @@ class _QuizState extends State<Quiz> {
     });
   }
 
+
+
   // build method we retrun 
   Widget build(context) {
-    // this dinamicly turn expressing 
-    // final screenWidget = activeScreen == 'start-screen'
-    //            ? StartScreen(switchScreen) :
-    //            const QuestionsScreen();
-
+    
     Widget screenWidget = StartScreen(switchScreen);
     if (activeScreen == 'questions-screen') {
-      screenWidget = QuestionsScreen();
+      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
+    }
+
+    if (activeScreen == 'result-screen') {
+      screenWidget = ResultScreen(restartFunc:  switchScreen,
+        chosenAnswers: selectedAnswers,);
     }
 
     return MaterialApp(home:

@@ -8,7 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 // This is the QuestionsScreen class which extends StatefulWidget
 class QuestionsScreen extends StatefulWidget {
   // This is the constructor for the QuestionsScreen class
-  const QuestionsScreen({super.key});
+  const QuestionsScreen({super.key, required this.onSelectAnswer});
+
+  final void Function(String answer) onSelectAnswer;
 
   // This method creates the state for the QuestionsScreen class
   @override
@@ -22,13 +24,14 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   var currentQuestionIndex = 0;
 
-  void answerQuestion() {
+  void answerQuestion(String selectedAsnwer) {
     // currentQuestionIndex = currentQuestionIndex + 1;
     // currentQuestionIndex += 1; 
+    widget.onSelectAnswer(selectedAsnwer);
     setState(() {
       currentQuestionIndex++;
     });
-    currentQuestionIndex++;
+    // currentQuestionIndex++;
   }
 
   // This method builds the widget tree for the QuestionsScreen class
@@ -48,7 +51,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           children: [
           Text(currentQuestion.text,
           style: GoogleFonts.nanumGothic(
-            color: Colors.white,
+            color: Color.fromARGB(132, 255, 255, 255),
             fontSize: 24,
             fontWeight: FontWeight.bold
           ),
@@ -56,7 +59,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
           const SizedBox(height: 30),
           // create button elevation 
           ...currentQuestion.getShuffledAnswers().map((answers) {
-            return AnswerButton(answerText: answers, onTap: answerQuestion);
+            return AnswerButton(answerText: answers, onTap: () {
+              answerQuestion(answers);
+            });
           }),
         
           // AnswerButton(answerText: currentQuestion.answers[0], onTap: () { }),
