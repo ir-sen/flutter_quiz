@@ -13,7 +13,7 @@ class QuizQuestion {
   ///
   /// The returned list is not the original answers list, so it can be safely
   /// modified without affecting the original data.
-  List<String> getShuffledAnswers() {
+  List<String> get shuffledAnswers {
     // Create a copy of the answers list.
     final shufflList = List<String>.of(answers);
 

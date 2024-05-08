@@ -16,10 +16,11 @@ class Quiz extends StatefulWidget {
   }
 }
 
-// this is class use only inner this class
+// the programming of the state in lose game 
+// this is class use only inner this class (_thisMeansPrivate)
 class _QuizState extends State<Quiz> {
   // list save state if user selected answer first add [0] secon [1] ...
-  List<String> selectedAnswers = [];
+  List<String> _selectedAnswers = [];
   // variable which can changed
   var activeScreen = 'start-screen';
 
@@ -29,10 +30,10 @@ class _QuizState extends State<Quiz> {
   /// Adds answer to the list of selected answers
   /// and switches to result screen if all questions were answered
   void chooseAnswer(String answer) {
-    selectedAnswers.add(answer);
+    _selectedAnswers.add(answer);
 
     /// If all questions were answered switch to result screen
-    if (selectedAnswers.length == questions.length) {
+    if (_selectedAnswers.length == questions.length) {
       setState(() {
         /// Reset selected answers list
         // selectedAnswers = [];
@@ -42,12 +43,13 @@ class _QuizState extends State<Quiz> {
       });
     }
   }
-  // @override
-  // void initState() {
-  //   activeScreen = StartScreen(switchScreen);
-  //   super.initState();
-  // }
 
+  void restartQuiz() {
+    setState(() {
+      _selectedAnswers = [];
+      activeScreen = 'questions-screen';
+    });  
+  }
 
 
   // this method functon for switch displays 
@@ -68,8 +70,8 @@ class _QuizState extends State<Quiz> {
     }
 
     if (activeScreen == 'result-screen') {
-      screenWidget = ResultScreen(restartFunc:  switchScreen,
-        chosenAnswers: selectedAnswers,);
+      screenWidget = ResultScreen(restartFunc:  restartQuiz,
+        chosenAnswers: _selectedAnswers,);
     }
 
     return MaterialApp(home:
